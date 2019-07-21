@@ -1,10 +1,10 @@
-// 2019-07-20 21:08:52
+// 2019-07-20 23:52:01
 #event create
 
 event_inherited();
 name = "Dresser";
-action = "get dressed";
-verb = "Getting Dressed";
+action = "put on clothes"
+verb = "Dressing"
 
 #event step
 
@@ -14,3 +14,4 @@ event_inherited();
 
 event_inherited();
 draw_self();
+//draw_text(x,y,string(barAlpha));

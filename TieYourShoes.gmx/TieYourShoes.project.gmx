@@ -6,7 +6,15 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\spr_player</sprite>
+    <sprites name="Player">
+      <sprite>sprites\spr_player_coll</sprite>
+      <sprite>sprites\spr_playerF_int</sprite>
+      <sprite>sprites\spr_playerB_int</sprite>
+      <sprite>sprites\spr_playerR_int</sprite>
+      <sprite>sprites\spr_playerB_walk</sprite>
+      <sprite>sprites\spr_playerF_walk</sprite>
+      <sprite>sprites\spr_playerR_walk</sprite>
+    </sprites>
     <sprite>sprites\spr_spawn</sprite>
     <sprite>sprites\spr_fridge</sprite>
     <sprite>sprites\spr_dresser</sprite>
@@ -18,6 +26,11 @@
     <background>background\bg_floor</background>
   </backgrounds>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\scr_part_walk.gml</script>
+    <script>scripts\scr_part_int.gml</script>
+    <script>scripts\scr_part_fire.gml</script>
+  </scripts>
   <objects name="objects">
     <object>objects\obj_player</object>
     <object>objects\obj_wall</object>
@@ -28,6 +41,8 @@
     <object>objects\obj_coll</object>
     <object>objects\obj_interactable</object>
     <object>objects\obj_control</object>
+    <object>objects\obj_firepit</object>
+    <object>objects\obj_partSys</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_init</room>

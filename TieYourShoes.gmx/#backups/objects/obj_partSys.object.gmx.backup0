@@ -1,0 +1,9 @@
+// 2019-07-21 00:56:26
+#event create
+
+global.partSys = part_system_create();
+part_system_depth(global.partSys,-100000);
+
+scr_part_fire();
+scr_part_int();
+scr_part_walk();
