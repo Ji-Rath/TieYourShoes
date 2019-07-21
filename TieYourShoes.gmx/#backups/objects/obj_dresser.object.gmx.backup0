@@ -1,0 +1,16 @@
+// 2019-07-20 21:11:23
+#event create
+
+event_inherited();
+name = "Dresser";
+action = "get dressed";
+verb = "Getting Dressed";
+
+#event step
+
+event_inherited();
+
+#event draw
+
+event_inherited();
+draw_self();

@@ -1,0 +1,92 @@
+// 2019-07-20 21:56:46
+#event create
+
+//Basic values
+spd = 1;
+maxSpd = 3;
+accel = 0;
+canInteract = noone;
+friction = 0.2;
+
+#event step
+
+//Interacting
+canInteract = collision_circle(x,y,25,obj_interactable,false,true);
+var interacting = canInteract && keyboard_check(vk_space);
+
+if(interacting) {
+    canInteract.bar += 15/60;
+    canInteract.alarm[0] = 1*60;
+    canInteract.pauseBar = true;
+}
+
+//Speed Control
+if(speed > maxSpd) {
+    speed = maxSpd;
+}
+
+if(speed < 0) {
+    speed = 0;
+}
+
+if(interacting && speed > 0) {
+    speed = maxSpd/8
+}
+
+//Keyboard controls
+if((keyboard_check(ord("W")) || keyboard_check(ord("A")) || keyboard_check(ord("S")) || keyboard_check(ord("D")))) {
+    speed += spd;
+}
+
+if(keyboard_check(ord("S"))) {
+    direction = 270;
+}
+if(keyboard_check(ord("W"))) {
+    direction = 90;
+}
+if(keyboard_check(ord("D"))) {
+    direction = 0;
+}
+if(keyboard_check(ord("A"))) {
+    direction = 180;
+}
+
+if(keyboard_check(ord("S")) && keyboard_check(ord("A"))) {
+    direction = 225;
+}
+if(keyboard_check(ord("S")) && keyboard_check(ord("D"))) {
+    direction = 315;
+}
+if(keyboard_check(ord("W")) && keyboard_check(ord("A"))) {
+    direction = 135;
+}
+if(keyboard_check(ord("W")) && keyboard_check(ord("D"))) {
+    direction = 45;
+}
+
+
+
+#event collision:obj_coll
+
+accel = 0;
+move_bounce_all(false);
+
+
+#event draw_gui
+
+draw_set_halign(fa_middle);
+draw_set_valign(fa_middle);
+draw_set_color(c_black);
+if(canInteract) {
+    var text = "";
+    if(!keyboard_check(vk_space)) {
+        text = "Press SPACE to "+canInteract.action;
+    } else {
+        text = canInteract.verb+"...#"+string(round(canInteract.bar))+"%";
+    }
+    draw_text(w/2,h/2,text);
+}
+
+
+
+

@@ -1,0 +1,41 @@
+// 2019-07-20 21:17:21
+#event create
+
+rate = 0;
+bar = 0;
+barAlpha = 0;
+name = "Null";
+action = "do something"
+verb = "doing something"
+pauseBar = true;
+
+#event step
+
+if(bar > 0.1) {
+    bar -= 100/60;
+}
+
+
+if(bar > 100) {
+    bar = 100;
+}
+if(bar < 0.1) {
+    bar = 0.1;
+}
+
+if(bar > 0.1 && barAlpha < 1) {
+    barAlpha = lerp(barAlpha,1,0.1);
+}
+if(bar = 0.1 && barAlpha > 0) {
+    barAlpha = lerp(barAlpha,0,0.3);
+}
+
+#event alarm0
+
+pauseBar = false;
+
+#event draw
+
+draw_set_alpha(barAlpha);
+draw_healthbar(x-15,y+10,x+15,y+15,bar,c_black,c_orange,c_orange,180,true,true);
+draw_set_alpha(1);
