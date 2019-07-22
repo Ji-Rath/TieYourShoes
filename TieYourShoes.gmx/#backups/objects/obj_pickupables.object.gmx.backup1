@@ -1,0 +1,33 @@
+// 2019-07-21 16:59:35
+#event create
+
+name = "Null";
+action = "pickup something";
+onPlayer = false;
+friction = 0.2;
+thrown = false;
+image_angle = random(359);
+
+#event step
+
+if(onPlayer) {
+    x = obj_player.x;
+    y = obj_player.y-10;
+}
+
+if(thrown) {
+    x = obj_player.x;
+    y = obj_player.y;
+    direction = point_direction(x,y,mouse_x,mouse_y);
+    speed = 6;
+    thrown = false;
+}
+
+if(place_meeting(x,y,obj_coll)) {
+    if(!onPlayer && speed != 0) {
+        move_bounce_all(false);
+        image_angle = random(359);
+    }
+}
+
+depth = -y;

@@ -1,0 +1,30 @@
+// 2019-07-21 19:34:54
+#event create
+
+event_inherited();
+image_speed = 0;
+name = "Meat"
+
+#event step
+
+event_inherited();
+
+depth = -1000;
+
+if(image_index = 1 && onPlayer) {
+    image_angle += 5;
+    image_xscale -= 0.01;
+    image_yscale -= 0.01
+}
+if(image_angle = 359) {
+    instance_destroy();
+    obj_control.points += 5;
+    obj_player.fed = true;
+}
+
+#event collision:obj_stove
+
+if(other.isOn && !onPlayer) {
+    x = other.x;
+    y = other.y;
+} 

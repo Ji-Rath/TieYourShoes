@@ -1,0 +1,17 @@
+// 2019-07-21 18:15:39
+#event create
+
+event_inherited();
+name = "Sink";
+action = "wash hands";
+verb = "Washing Hands";
+rate = 30/60;
+
+#event step
+
+event_inherited();
+if(complete) {
+    obj_player.dirty = false;
+    complete = false;
+    bar = 0.1;
+}

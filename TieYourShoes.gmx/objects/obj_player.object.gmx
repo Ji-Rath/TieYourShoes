@@ -27,13 +27,42 @@
             <kind>1</kind>
             <string>
 //Basic values
-spd = 1;
-maxSpd = 2.5;
+spd = 0.5;
+maxSpd = 1.25;
 canInteract = noone;
+canPickup = noone;
 friction = 0.2;
 image_speed = 0;
-image_xscale = 2;
-image_yscale = 2;
+alarm[0] = random_range(10,20)*60;
+useBathroom = false;
+dirty = false;
+dressed = false;
+fed = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+useBathroom = true;
+maxSpd = 0.5;
 </string>
           </argument>
         </arguments>
@@ -57,81 +86,118 @@ image_yscale = 2;
           <argument>
             <kind>1</kind>
             <string>
-//Friction
-friction = 0.15;
-
-//Interacting
-canInteract = collision_circle(x,y,25,obj_interactable,false,true);
-var interacting = canInteract &amp;&amp; keyboard_check(vk_space);
-
-if(interacting) {
-    canInteract.bar += 15/60;
-    canInteract.alarm[0] = 1*60;
-    canInteract.pauseBar = true;
-    part_particles_create(global.partSys,x,y,obj_partSys.partInt,1);
-}
-
-//Speed Control
-if(speed &gt; maxSpd) {
-    speed = maxSpd;
-}
-
-if(speed &lt; 0 || speed = 0) {
-    speed = 0;
-    image_index = 0;
-}
-
-
-if(interacting) {
-    speed /= 10;
-    sprite_index = spr_playerF_int;
-    image_speed = 0.1;
-} else {
-    image_speed = speed/10;
-}
-
-if(floor(image_index) == 1 || floor(image_index) == 3) {
-    part_particles_create(global.partSys,x,y+3,obj_partSys.partWalk,1);
-}
-
-//Depth Control
-depth = -y;
-
-//Keyboard controls
-if((keyboard_check(ord("W")) || keyboard_check(ord("A")) || keyboard_check(ord("S")) || keyboard_check(ord("D")))) {
-    speed += spd;
-}
-
-if(keyboard_check(ord("S")) &amp;&amp; !place_meeting(x,y+3,obj_coll)) {
-    direction = 270;
-    sprite_index = spr_playerF_walk
-}
-if(keyboard_check(ord("W")) &amp;&amp; !place_meeting(x,y-3,obj_coll)) {
-    direction = 90;
-    sprite_index = spr_playerB_walk
-}
-if(keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y,obj_coll)) {
-    direction = 0;
-    sprite_index = spr_playerR_walk
-    image_xscale = 2;
-}
-if(keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y,obj_coll)) {
-    direction = 180;
-    sprite_index = spr_playerR_walk
-    image_xscale = -2;
-}
-
-if(keyboard_check(ord("S")) &amp;&amp; keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y+3,obj_coll)) {
-    direction = 225;
-}
-if(keyboard_check(ord("S")) &amp;&amp; keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y+3,obj_coll)) {
-    direction = 315;
-}
-if(keyboard_check(ord("W")) &amp;&amp; keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y+3,obj_coll)) {
-    direction = 135;
-}
-if(keyboard_check(ord("W")) &amp;&amp; keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y-3,obj_coll)) {
-    direction = 45;
+if(!obj_control.finished) {
+    //Dirty effect
+    if(dirty) {
+        part_particles_create(global.partSys,x,y-5,obj_partSys.partPoison,1);
+    }
+    
+    if(useBathroom) {
+        part_particles_create(global.partSys,x,y,obj_partSys.partPoop,1);
+    }
+    //Friction
+    friction = 0.15;
+    
+    //Interacting
+    canInteract = collision_circle(x,y,15,obj_interactable,false,true);
+    var interacting = canInteract &amp;&amp; keyboard_check(vk_space) &amp;&amp; !canInteract.complete &amp;&amp; canInteract.rate != 0;
+    
+    if(interacting) {
+        canInteract.bar += canInteract.rate;
+        canInteract.alarm[0] = 1*60;
+        canInteract.pauseBar = true;
+        part_particles_create(global.partSys,x,y,obj_partSys.partInt,1);
+    }
+    
+    canPickup = collision_circle(x,y,10,obj_pickupables,false,true);
+    var picking = canPickup &amp;&amp; keyboard_check_pressed(vk_space) &amp;&amp; !interacting;
+    
+    if(picking) {
+        canPickup.onPlayer = true;
+    }
+    
+    if(mouse_check_button_pressed(mb_left) &amp;&amp; canPickup &amp;&amp; canPickup.onPlayer) {
+        canPickup.onPlayer = false;
+        canPickup.thrown = true;
+    }
+    
+    //Speed Control
+    if(speed &gt; maxSpd) {
+        speed = maxSpd;
+    }
+    
+    if(speed &lt; 0 || speed = 0 &amp;&amp; !interacting) {
+        speed = 0;
+        image_index = 0;
+    }
+    
+    if(interacting) {
+        speed /= 10;
+        sprite_index = spr_playerF_int;
+        image_speed = 0.1;
+    } else {
+        image_speed = speed/12;
+    }
+    
+    if(floor(image_index) == 1 || floor(image_index) == 3) {
+        part_particles_create(global.partSys,x,y+3,obj_partSys.partWalk,1);
+    }
+    
+    //Depth Control
+    depth = -y;
+    
+    //Keyboard controls
+    if((keyboard_check(ord("W")) || keyboard_check(ord("A")) || keyboard_check(ord("S")) || keyboard_check(ord("D")))) {
+        speed += spd;
+    }
+    
+    if(keyboard_check(ord("S")) &amp;&amp; !place_meeting(x,y+3,obj_coll)) {
+        direction = 270;
+        if(!dressed) {
+            sprite_index = spr_playerF_walk;
+        } else {
+            sprite_index = spr_playerFD_walk;
+        }
+    }
+    if(keyboard_check(ord("W")) &amp;&amp; !place_meeting(x,y-3,obj_coll)) {
+        direction = 90;
+        if(!dressed) {
+            sprite_index = spr_playerB_walk;
+        } else {
+            sprite_index = spr_playerBD_walk;
+        }
+    }
+    if(keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y,obj_coll)) {
+        direction = 0;
+        if(!dressed) {
+            sprite_index = spr_playerR_walk;
+        } else {
+            sprite_index = spr_playerRD_walk;
+        }
+        image_xscale = 1;
+    }
+    if(keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y,obj_coll)) {
+        direction = 180;
+        if(!dressed) {
+            sprite_index = spr_playerR_walk;
+        } else {
+            sprite_index = spr_playerRD_walk;
+        }
+        image_xscale = -1;
+    }
+    
+    if(keyboard_check(ord("S")) &amp;&amp; keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y+3,obj_coll)) {
+        direction = 225;
+    }
+    if(keyboard_check(ord("S")) &amp;&amp; keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y+3,obj_coll)) {
+        direction = 315;
+    }
+    if(keyboard_check(ord("W")) &amp;&amp; keyboard_check(ord("A")) &amp;&amp; !place_meeting(x-3,y+3,obj_coll)) {
+        direction = 135;
+    }
+    if(keyboard_check(ord("W")) &amp;&amp; keyboard_check(ord("D")) &amp;&amp; !place_meeting(x+3,y-3,obj_coll)) {
+        direction = 45;
+    }
 }
 </string>
           </argument>
@@ -185,14 +251,43 @@ y = yprevious
 draw_set_halign(fa_middle);
 draw_set_valign(fa_middle);
 draw_set_color(c_black);
-if(canInteract) {
+draw_set_font(fnt_main);
+if(canInteract &amp;&amp; !canInteract.complete &amp;&amp; canInteract.rate != 0) {
+    draw_set_color(c_ltgray);
+    draw_rectangle(50,view_hview/1.25+10,view_wview-50,view_hview/1.25-10,false);
+    draw_set_color(c_black);
     var text = "";
     if(!keyboard_check(vk_space)) {
-        text = "Press SPACE to "+canInteract.action;
+        text = "Hold SPACE to "+canInteract.action;
     } else {
         text = canInteract.verb+"...#"+string(round(canInteract.bar))+"%";
     }
-    draw_text(view_wview/2,view_hview/2,text);
+    draw_text(view_wview/2,view_hview/1.25,text);
+} else if(instance_exists(canPickup)) {
+    var text = "";
+    draw_set_color(c_ltgray);
+    draw_rectangle(50,view_hview/1.25+10,view_wview-50,view_hview/1.25-10,false);
+    draw_set_color(c_black);
+    if(!canPickup.onPlayer) {
+        text = "Press SPACE to pickup "+canPickup.name;
+    } else {
+        text = "Press LEFT MB to throw "+canPickup.name;
+    }
+    draw_text(view_wview/2,view_hview/1.25,text);
+}
+
+if(!obj_control.finished) {
+    draw_set_halign(fa_left);
+    draw_text(5,10,"SCORE: "+string(obj_control.points));
+    draw_text(5,20,"TIME: "+string(obj_control.time));
+}
+
+if(place_meeting(x,y,obj_bed)) {
+    draw_set_color(c_ltgray);
+    draw_rectangle(50,view_hview/1.25+10,view_wview-50,view_hview/1.25-10,false);
+    draw_set_color(c_black);
+    draw_set_halign(fa_middle);
+    draw_text(view_wview/2,view_hview/1.25,"I gotta clean, shower, and eat!");
 }
 
 

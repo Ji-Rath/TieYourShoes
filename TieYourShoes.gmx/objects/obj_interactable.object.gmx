@@ -6,7 +6,7 @@
   <depth>0</depth>
   <persistent>0</persistent>
   <parentName>obj_coll</parentName>
-  <maskName>&lt;undefined&gt;</maskName>
+  <maskName>spr_mask</maskName>
   <events>
     <event eventtype="0" enumb="0">
       <action>
@@ -26,7 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>
-rate = 0;
+rate = 15/60;
 bar = 0;
 barAlpha = 0;
 name = "Null";
@@ -125,9 +125,7 @@ if(bar = 0.1 &amp;&amp; barAlpha &gt; 0) {
           <argument>
             <kind>1</kind>
             <string>
-draw_set_alpha(barAlpha);
-draw_healthbar(x-15,y+10,x+15,y+13,bar,c_black,c_orange,c_orange,180,true,true);
-draw_set_alpha(1);
+draw_self();
 </string>
           </argument>
         </arguments>

@@ -1,0 +1,9 @@
+// 2019-07-21 08:18:48
+#event create
+
+for(i=0;i<instance_number(obj_spawn_int);i++) {
+    var s = instance_find(obj_spawn_int,i);
+    if(!place_meeting(s.x,s.y,obj_interactable)) {
+        instance_create(s.x,s.y,choose(obj_dresser))
+    }
+}

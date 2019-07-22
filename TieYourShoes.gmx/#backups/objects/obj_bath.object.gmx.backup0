@@ -1,0 +1,21 @@
+// 2019-07-21 18:15:53
+#event create
+
+event_inherited();
+name = "Bath";
+action = "take a bath";
+verb = "Bathing";
+
+
+#event step
+
+event_inherited();
+if(complete) {
+    obj_player.dirty = false;
+    complete = false;
+    bar = 0.1;
+}
+
+#event draw
+
+event_inherited();

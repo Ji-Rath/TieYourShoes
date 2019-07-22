@@ -1,4 +1,4 @@
-// 2019-07-21 00:56:26
+// 2019-07-21 17:25:21
 #event create
 
 global.partSys = part_system_create();
@@ -7,3 +7,9 @@ part_system_depth(global.partSys,-100000);
 scr_part_fire();
 scr_part_int();
 scr_part_walk();
+scr_part_poison();
+scr_part_poop();
+
+
+#event other_game_end
+part_system_clear(global.partSys);

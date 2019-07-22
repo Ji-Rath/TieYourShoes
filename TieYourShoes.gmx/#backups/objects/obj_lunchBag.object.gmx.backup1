@@ -1,0 +1,10 @@
+// 2019-07-21 16:23:23
+#event create
+
+event_inherited();
+name = "Lunch Bag";
+rate = 0;
+
+#event draw
+
+event_inherited();

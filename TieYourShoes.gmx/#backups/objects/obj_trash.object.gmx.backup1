@@ -1,0 +1,18 @@
+// 2019-07-21 19:37:19
+#event create
+
+event_inherited();
+
+image_index = choose(0,1);
+image_speed = 0;
+name = "Trash";
+
+#event step
+
+event_inherited();
+
+if(place_meeting(x,y,obj_trashBin)) {
+    instance_destroy();
+    obj_control.points += 5;
+    part_particles_create(global.partSys,x,y,obj_partSys.partInt,5);
+}

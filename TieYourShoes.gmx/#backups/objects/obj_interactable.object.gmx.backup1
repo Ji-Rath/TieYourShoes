@@ -1,7 +1,7 @@
-// 2019-07-20 23:48:56
+// 2019-07-21 17:17:17
 #event create
 
-rate = 0;
+rate = 15/60;
 bar = 0;
 barAlpha = 0;
 name = "Null";
@@ -19,6 +19,8 @@ pauseBar = false;
 if(bar > 0.1 && !pauseBar && bar < 100) {
     bar -= 100/60;
 }
+
+depth = -y;
 
 
 if(bar > 100) {
@@ -38,6 +40,8 @@ if(bar = 0.1 && barAlpha > 0) {
 
 #event draw
 
+draw_self();
+
 draw_set_alpha(barAlpha);
-draw_healthbar(x-15,y+10,x+15,y+13,bar,c_black,c_orange,c_orange,180,true,true);
+draw_healthbar(x-10,y+5,x+10,y+8,bar,c_black,c_orange,c_orange,180,true,true);
 draw_set_alpha(1);

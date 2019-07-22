@@ -14,35 +14,117 @@
       <sprite>sprites\spr_playerB_walk</sprite>
       <sprite>sprites\spr_playerF_walk</sprite>
       <sprite>sprites\spr_playerR_walk</sprite>
+      <sprite>sprites\spr_player_stress</sprite>
+      <sprite>sprites\sprite43</sprite>
+      <sprite>sprites\spr_playerFD_walk</sprite>
+      <sprite>sprites\spr_playerRD_walk</sprite>
+      <sprite>sprites\spr_playerBD_walk</sprite>
     </sprites>
-    <sprite>sprites\spr_spawn</sprite>
-    <sprite>sprites\spr_fridge</sprite>
-    <sprite>sprites\spr_dresser</sprite>
-    <sprite>sprites\spr_stove</sprite>
-    <sprite>sprites\spr_bed</sprite>
+    <sprites name="Particles">
+      <sprite>sprites\spr_dust</sprite>
+      <sprite>sprites\spr_fire</sprite>
+      <sprite>sprites\spr_poop</sprite>
+      <sprite>sprites\spr_poison</sprite>
+    </sprites>
+    <sprites name="Scenery">
+      <sprite>sprites\spr_painting</sprite>
+      <sprite>sprites\spr_spawn</sprite>
+      <sprite>sprites\spr_lamp</sprite>
+      <sprite>sprites\spr_drawer</sprite>
+      <sprite>sprites\spr_fireplace</sprite>
+      <sprite>sprites\spr_mirror</sprite>
+      <sprite>sprites\spr_table</sprite>
+      <sprite>sprites\spr_bed_blanket</sprite>
+      <sprite>sprites\spr_flowerpot</sprite>
+      <sprite>sprites\spr_kitchenTable</sprite>
+      <sprite>sprites\spr_chair</sprite>
+      <sprite>sprites\spr_bed</sprite>
+      <sprite>sprites\spr_couch</sprite>
+    </sprites>
+    <sprites name="Interactables">
+      <sprite>sprites\spr_toilet</sprite>
+      <sprite>sprites\spr_stove</sprite>
+      <sprite>sprites\spr_dresser</sprite>
+      <sprite>sprites\spr_food</sprite>
+      <sprite>sprites\spr_laundry</sprite>
+      <sprite>sprites\spr_trash</sprite>
+      <sprite>sprites\spr_washer</sprite>
+      <sprite>sprites\spr_todo</sprite>
+      <sprite>sprites\spr_fridge</sprite>
+      <sprite>sprites\spr_sink</sprite>
+      <sprite>sprites\spr_rug</sprite>
+      <sprite>sprites\spr_bath</sprite>
+      <sprite>sprites\spr_laundryBasket</sprite>
+      <sprite>sprites\spr_television</sprite>
+      <sprite>sprites\spr_lunchBag</sprite>
+      <sprite>sprites\spr_door</sprite>
+      <sprite>sprites\spr_trashBin</sprite>
+    </sprites>
+    <sprite>sprites\spr_mask</sprite>
     <sprite>sprites\spr_wall</sprite>
+    <sprite>sprites\spr_arrow</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_floor</background>
+    <background>background\bg_tiles</background>
+    <background>background\bg_wall_top</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\scr_part_walk.gml</script>
     <script>scripts\scr_part_int.gml</script>
+    <script>scripts\scr_part_goal.gml</script>
     <script>scripts\scr_part_fire.gml</script>
+    <script>scripts\scr_part_poison.gml</script>
+    <script>scripts\scr_part_poop.gml</script>
   </scripts>
+  <fonts name="fonts">
+    <font>fonts\fnt_main</font>
+    <font>fonts\fnt_big</font>
+  </fonts>
   <objects name="objects">
+    <objects name="Interactables">
+      <object>objects\obj_washer</object>
+      <object>objects\obj_interactable</object>
+      <object>objects\obj_fridge</object>
+      <object>objects\obj_food</object>
+      <object>objects\obj_trash</object>
+      <object>objects\obj_sink</object>
+      <object>objects\obj_toilet</object>
+      <object>objects\obj_pickupables</object>
+      <object>objects\obj_stove</object>
+      <object>objects\obj_dresser</object>
+      <object>objects\obj_laundryBasket</object>
+      <object>objects\obj_trashBin</object>
+      <object>objects\obj_bath</object>
+      <object>objects\obj_lunchBag</object>
+      <object>objects\obj_rug</object>
+      <object>objects\obj_laundry</object>
+      <object>objects\obj_todo</object>
+    </objects>
+    <objects name="Scenery">
+      <object>objects\obj_table</object>
+      <object>objects\obj_lamp</object>
+      <object>objects\obj_painting</object>
+      <object>objects\obj_flowerPot</object>
+      <object>objects\obj_kitchenTable</object>
+      <object>objects\obj_mirror</object>
+      <object>objects\obj_couch</object>
+      <object>objects\obj_drawer</object>
+      <object>objects\obj_fireplace</object>
+    </objects>
     <object>objects\obj_player</object>
     <object>objects\obj_wall</object>
-    <object>objects\obj_fridge</object>
-    <object>objects\obj_dresser</object>
-    <object>objects\obj_stove</object>
+    <object>objects\obj_bed_blanket</object>
     <object>objects\obj_bed</object>
     <object>objects\obj_coll</object>
-    <object>objects\obj_interactable</object>
     <object>objects\obj_control</object>
-    <object>objects\obj_firepit</object>
     <object>objects\obj_partSys</object>
+    <object>objects\obj_spawn_int</object>
+    <object>objects\obj_spawn_pickup</object>
+    <object>objects\obj_spawn_player</object>
+    <object>objects\obj_door</object>
+    <object>objects\obj_arrow</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_init</room>

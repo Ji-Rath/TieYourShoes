@@ -1,0 +1,20 @@
+// 2019-07-21 17:42:37
+#event create
+
+event_inherited();
+name = "Toilet";
+action = "take a dump";
+verb = "Using the Bathroom";
+rate = 30/60;
+
+#event step
+
+event_inherited();
+if(complete) {
+    obj_player.useBathroom = false;
+    obj_player.alarm[0] = random_range(30,40)*60;
+    obj_player.dirty = true;
+    obj_player.maxSpd = 1.25
+    complete = false;
+    bar = 0.1;
+}

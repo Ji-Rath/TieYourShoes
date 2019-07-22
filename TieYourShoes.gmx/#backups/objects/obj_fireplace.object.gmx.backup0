@@ -1,0 +1,5 @@
+// 2019-07-21 16:44:37
+#event create
+fireEmit = part_emitter_create(global.partSys);
+part_emitter_region(global.partSys,fireEmit,x-6,x+6,y+5,y+5,1,1);
+part_emitter_stream(global.partSys,fireEmit,obj_partSys.partFire,-3);

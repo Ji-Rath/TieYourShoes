@@ -1,0 +1,26 @@
+// 2019-07-21 18:43:18
+#event create
+
+event_inherited();
+image_speed = 0;
+name = "Laundry";
+
+
+#event step
+
+event_inherited();
+depth = -1000;
+
+if(place_meeting(x,y,obj_laundryBasket)) {
+    if(image_index == 1) {
+        instance_destroy();
+        obj_control.points += 5;
+    }
+}
+
+#event collision:obj_washer
+
+if(!onPlayer) {
+    x = other.x;
+    y = other.y;
+} 

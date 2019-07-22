@@ -1,0 +1,28 @@
+// 2019-07-21 16:36:40
+#event create
+
+event_inherited();
+rate2 = 5/60;
+rate = 0;
+
+#event step
+
+event_inherited();
+
+
+if(complete && !place_meeting(x,y,obj_laundry)) {
+    bar = 0.1;
+    complete = false;
+}
+
+#event collision:obj_laundry
+
+if(!complete && !other.onPlayer && other.image_index == 0) {
+    other.depth = -1;
+    bar += rate2;
+    alarm[0] = 1*60;
+    pauseBar = true;
+    if(bar >= 100) {
+        other.image_index = 1;
+    }
+}

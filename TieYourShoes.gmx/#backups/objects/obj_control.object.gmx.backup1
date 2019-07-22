@@ -1,4 +1,193 @@
-// 2019-07-20 21:58:22
+// 2019-07-21 19:39:15
+#event create
+
+randomize();
+obj = ds_list_create();
+
+ds_list_add(obj,obj_dresser);
+ds_list_add(obj,obj_fridge);
+ds_list_add(obj,obj_stove);
+ds_list_add(obj,obj_toilet);
+ds_list_add(obj,obj_sink);
+ds_list_add(obj,obj_washer);
+ds_list_add(obj,obj_bath);
+ds_list_add(obj,obj_laundryBasket);
+ds_list_add(obj,obj_trashBin);
+ds_list_shuffle(obj);
+
+
+points = 0;
+time = 120;
+
+fade = false;
+txtAlpha = 1;
+menuAlpha = 1;
+
+oldWView = view_wview;
+oldHView = view_hview;
+
+view_wview /= 8;
+view_hview /= 8;
+
+finished = false;
+
+alarm[0] = -1;
+screen = 1;
+
+font = fnt_main;
+
+menu = surface_create(room_width,room_height);
+
+#event alarm0
+
+screen = 3;
+
+#event step
+
+if(keyboard_check(ord("R"))) {
+    game_restart();
+}
+
+if(!finished) {
+    time -= 1/60;
+}
+
+if(room = rm_game) {
+    view_xview = lerp(view_xview,obj_player.x,0.2)-(view_wview/10);
+    view_yview = lerp(view_yview,obj_player.y,0.2)-(view_hview/10);
+}
+
+if((keyboard_check_pressed(vk_anykey) || mouse_check_button_pressed(mb_any)) && room == rm_init) {
+    if(screen == 1) {
+        screen ++
+        if(alarm[0] == -1) {
+            alarm[0] = 1*60;
+        }
+    }
+    if(screen == 3) {
+        fade = true;
+        room_goto(rm_game);
+    }
+}
+
+if(fade && !finished) {
+    txtAlpha -= 0.01;
+} else {
+    part_particles_create(global.partSys,random(view_wview),random(view_hview),obj_partSys.partFire,1)
+}
+
+if(txtAlpha < 0.5 && !finished) {
+    if(menuAlpha > 0) {
+        menuAlpha -= 0.01;
+    }
+}
+
+if(menuAlpha < 0.3) {
+    view_wview = lerp(view_wview,oldWView/4,0.01);
+    view_hview = lerp(view_hview,oldHView/4,0.01);
+}
+
+//Reappear end game
+if(finished && menuAlpha < 1) {
+    menuAlpha += 0.05;
+}
+
+if time < 0 {
+    finished = true;    
+}
+
+if(finished) {
+    obj_player.alarm[0] = -1;
+}
+
+#event other_room_start
+
+//Spawn interactables
+if(room = rm_game) {
+    var size = ds_list_size(obj);
+    for(i=0;i<size;i++) {
+        var s = instance_find(obj_spawn_int,i);
+        var val = ds_list_find_value(obj,i);
+        instance_create(s.x,s.y,val);
+    }
+    view_xview = obj_player.x-(view_wview/10);
+    view_yview = obj_player.y-(view_hview/10);
+    view_wview /= 4;
+    view_hview /= 4;
+}
+
+#event draw_gui
+
+surface_set_target(menu);
+draw_set_color(c_white);
+if(menuAlpha > 0) {
+    draw_set_alpha(menuAlpha);
+    draw_rectangle(0,0,room_width,room_height,false);
+    draw_set_alpha(txtAlpha);
+    draw_set_halign(fa_middle);
+    draw_set_font(fnt_main);
+    if(screen == 1) {
+        draw_set_color(c_black)
+        draw_text(view_wview/2,view_hview/3,"You are just an average worker...#tying your shoes,#dressing up,#waking up at the usual time...")
+    }
+    if(screen == 2) {
+        draw_set_color(c_red);
+        if(irandom(2) == 0) {
+            font = fnt_big;
+        } else {
+            font = fnt_main;
+        }
+        draw_set_font(font);
+        draw_text(view_wview/2,view_hview/2,"120 SECONDS BEFORE WORK");
+        draw_set_font(fnt_main);
+    }
+    if(screen == 3) {
+        draw_set_color(c_gray);
+        draw_text(view_wview/2,view_hview/5,"Tie Your Shoes#A Game by Ji_Rath and Jaguilar#(HumbledGiraffe)");
+        draw_set_color(c_black);
+        draw_text(view_wview/2,view_hview/1.25,"Press any key to wake up...");
+    }
+    draw_set_alpha(1);
+}
+
+if(finished) {
+    draw_set_alpha(menuAlpha);
+    draw_set_color(c_white);
+    draw_rectangle(0,0,room_width,room_height,false);
+    draw_set_color(c_black);
+    var txt = "And so you went to work...";
+    if(time <= 0) {
+        txt += "arriving late"
+    }
+    if(!obj_player.fed) {
+        txt += "starving"
+    }
+    if(!obj_player.dressed) {
+        txt += "#undressed,"
+    }
+    if(obj_player.dirty) {
+        txt += "#smelly,"
+    }
+    if(obj_player.useBathroom) {
+        txt += "#with soiled pants, "
+    }
+    if(instance_exists(obj_laundry) || instance_exists(obj_trash)) {
+        txt += "#and when you came back, there were bugs everywhere"
+    }
+    txt += "##Final Score - "+string(obj_control.points)+" Points";
+    txt += "#Time Remaining - "+string(obj_control.time)+" Seconds";
+    txt += "#Press any key to try again";
+    
+    draw_text(view_wview/2,view_hview/4,txt);
+} 
+surface_reset_target();
+
+if(surface_exists(menu)) {
+    draw_surface(menu,0,0);
+} else {
+    menu = surface_create(room_width,room_height);
+}
+
 #event draw_end
 
-display_set_gui_size(display_get_width(),display_get_height());
+display_set_gui_size(view_wview,view_hview);

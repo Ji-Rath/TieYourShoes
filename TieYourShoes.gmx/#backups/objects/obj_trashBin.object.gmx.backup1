@@ -1,0 +1,9 @@
+// 2019-07-21 18:33:24
+#event create
+
+event_inherited();
+rate = 0;
+
+#event draw
+
+event_inherited();

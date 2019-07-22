@@ -1,13 +1,20 @@
-// 2019-07-21 00:45:16
+// 2019-07-21 18:45:30
 #event create
 
 event_inherited();
 name = "Dresser";
 action = "put on clothes"
 verb = "Dressing"
+rate = 30/60;
+
+#event step
+
+event_inherited();
+
+if(complete) {
+    obj_player.dressed = true;
+}
 
 #event draw
 
 event_inherited();
-draw_self();
-//draw_text(x,y,string(barAlpha));
